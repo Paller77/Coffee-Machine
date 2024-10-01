@@ -22,6 +22,7 @@ def is_resource_sufficient(order_ingredients):
     return True
 
 def coins():
+    """This function stores the inserted coins"""
     print("Please insert your coins!")
     total = int(input("How many quarters?:\n")) * 0.25
     total += int(input("How many dimes?:\n")) * 0.1
@@ -30,6 +31,7 @@ def coins():
     return total
 
 def is_transaction_successful(money, cost):
+    """Checks if the inserted money is enough"""
     if money >= cost:
         change = round(money - cost, 2)
         print(f"Here is ${change} in change:")
@@ -43,11 +45,13 @@ def is_transaction_successful(money, cost):
         return False
 
 def operation():
+    """Defines the complete operation of the machine"""
     is_operation_active = True
     is_turn_on = False
     program_finish = False
-
+    # The first while loop last as long as the machine "plugged in"
     while not program_finish:
+        # The 2nd while loop last as long as the machine "operation function called"
         while is_operation_active:
             machine_status = input("Machine is currently turned off... \n(Type 'ON' to turn it on)\n").lower()
             if machine_status == "on":
@@ -57,9 +61,11 @@ def operation():
                 is_turn_on = False
                 is_operation_active = False
                 program_finish = True
+            # The 3rd while loop lasts as long as the machine turned on
             while is_turn_on:
                 print(logo)
                 user_prompt = input("Welcome! What would you like to drink? (Espresso/Latte/Cappuccino): ").lower()
+                # Here the service mode is defined:
                 if user_prompt == "service":
                     is_service_active = True
                     while is_service_active:
@@ -75,7 +81,7 @@ def operation():
                             time.sleep(5)
                             print("Service mode closed!")
                             is_service_active = False
-
+                # Making of the espresso:
                 elif user_prompt == "espresso":
                     can_make = True
                     for ingredient, amount in MENU["espresso"]["ingredients"].items():
@@ -97,7 +103,7 @@ def operation():
                             print("\n" * 50)
                     else:
                         print("!!! SERVICE REQUIRED !!!")
-
+                # Making of the latte:
                 elif user_prompt == "latte":
                     can_make = True
                     for ingredient, amount in MENU["latte"]["ingredients"].items():
@@ -105,7 +111,7 @@ def operation():
                             can_make = False
                             print(f"!!!ERROR!!! Not enough {ingredient}")
                     if can_make:
-                        print(f"Espresso's price: ${MENU["latte"]["cost"]}")
+                        print(f"Latte's price: ${MENU["latte"]["cost"]}")
                         payment = coins()
                         if is_transaction_successful(payment, MENU["latte"]["cost"]):
                             print("Preparing a warm milky Latte for you! Please be patient...")
@@ -119,7 +125,7 @@ def operation():
                             print("\n" * 50)
                     else:
                         print("!!! SERVICE REQUIRED !!!")
-
+                # Making of the cappucino:
                 elif user_prompt == "cappuccino":
                     can_make = True
                     for ingredient, amount in MENU["cappuccino"]["ingredients"].items():
@@ -127,7 +133,7 @@ def operation():
                             can_make = False
                             print(f"!!!ERROR!!! Not enough {ingredient}")
                     if can_make:
-                        print(f"Espresso's price: ${MENU["cappuccino"]["cost"]}")
+                        print(f"Cappuccino's price: ${MENU["cappuccino"]["cost"]}")
                         payment = coins()
                         if is_transaction_successful(payment, MENU["cappuccino"]["cost"]):
                             print("Preparing a warm foamy Cappuccino for you! Please be patient...")
@@ -141,13 +147,13 @@ def operation():
                             print("\n" * 50)
                     else:
                         print("!!! SERVICE REQUIRED !!!")
-
+                # Turn off:
                 elif user_prompt == "turn off":
                     is_turn_on = False
                     print("Turning OFF...")
                     time.sleep(10)
                     print("\n" * 50)
-
+                # Unplug:
                 elif user_prompt == "unplug":
                     is_turn_on = False
                     is_operation_active = False
